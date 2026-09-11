@@ -1,0 +1,27 @@
+<header class="app-header">
+  <h1>Conversation Dashboard</h1>
+</header>
+
+<main class="layout">
+  <app-conversation-list
+    [conversations]="conversations()"
+    [selectedId]="selectedId()"
+    [loading]="loading()"
+    [error]="loadError()"
+    (selectConversation)="onSelect($event)"
+    (filtersChange)="onFiltersChange($event)"
+  />
+
+  @if (selected(); as conversation) {
+    <app-conversation-detail
+      [conversation]="conversation"
+      [saving]="saving()"
+      [saveError]="saveError()"
+      (save)="onSave($event)"
+    />
+  } @else {
+    <section class="panel detail-panel placeholder">
+      <p>Select a conversation to see its details.</p>
+    </section>
+  }
+</main>

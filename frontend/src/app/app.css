@@ -1,0 +1,29 @@
+.app-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: #fff;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.layout {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  height: calc(100vh - 4.5rem);
+  align-items: stretch;
+}
+
+@media (max-width: 800px) {
+  .layout {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .detail-panel {
+    width: auto;
+  }
+}

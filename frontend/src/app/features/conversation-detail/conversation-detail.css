@@ -1,0 +1,58 @@
+.detail-panel {
+  width: 360px;
+  flex-shrink: 0;
+  padding: 1.25rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.detail-subject {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.customer {
+  margin: 0;
+  font-weight: 600;
+}
+
+.created {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.save-button {
+  margin-top: 0.5rem;
+  padding: 0.55rem 1rem;
+  border: 0;
+  border-radius: 6px;
+  background: #2563eb;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.save-button:disabled {
+  background: #c7d2fe;
+  cursor: not-allowed;
+}
+
+.placeholder p {
+  color: var(--muted);
+}

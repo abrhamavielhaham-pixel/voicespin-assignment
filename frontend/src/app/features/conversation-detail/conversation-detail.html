@@ -1,0 +1,41 @@
+<section class="panel detail-panel">
+  <h2 class="detail-subject">{{ conversation().subject }}</h2>
+  <p class="customer">
+    {{ conversation().customerName }} · {{ conversation().customerEmail }}
+  </p>
+  <p class="created">Created {{ conversation().createdAt | date: 'medium' }}</p>
+
+  <div class="field">
+    <label for="detail-status">Status</label>
+    <select
+      id="detail-status"
+      class="status-select"
+      (change)="status.set($any($event.target).value)"
+    >
+      @for (s of statuses; track s) {
+        <option [value]="s" [selected]="s === status()">{{ statusLabels[s] }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="detail-priority">Priority</label>
+    <select
+      id="detail-priority"
+      class="priority-select"
+      (change)="priority.set($any($event.target).value)"
+    >
+      @for (p of priorities; track p) {
+        <option [value]="p" [selected]="p === priority()">{{ p }}</option>
+      }
+    </select>
+  </div>
+
+  @if (saveError()) {
+    <p class="state error-state">{{ saveError() }}</p>
+  }
+
+  <button type="button" class="save-button" [disabled]="saving() || !dirty()" (click)="onSave()">
+    {{ saving() ? 'Saving…' : 'Save changes' }}
+  </button>
+</section>

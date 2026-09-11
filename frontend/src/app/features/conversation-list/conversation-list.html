@@ -1,0 +1,67 @@
+<section class="panel list-panel">
+  <div class="filters">
+    <input
+      type="search"
+      class="search-input"
+      placeholder="Search name, email or subject"
+      aria-label="Search conversations"
+      [value]="search()"
+      (input)="onSearchInput($any($event.target).value)"
+    />
+    <select
+      class="status-filter"
+      aria-label="Filter by status"
+      (change)="onStatusChange($any($event.target).value)"
+    >
+      <option value="">All statuses</option>
+      @for (s of statuses; track s) {
+        <option [value]="s" [selected]="s === status()">{{ statusLabels[s] }}</option>
+      }
+    </select>
+    <select
+      class="priority-filter"
+      aria-label="Filter by priority"
+      (change)="onPriorityChange($any($event.target).value)"
+    >
+      <option value="">All priorities</option>
+      @for (p of priorities; track p) {
+        <option [value]="p" [selected]="p === priority()">{{ p }}</option>
+      }
+    </select>
+  </div>
+
+  @if (loading()) {
+    <p class="state loading-state">Loading conversations…</p>
+  } @else if (error()) {
+    <p class="state error-state">{{ error() }}</p>
+  } @else if (conversations().length === 0) {
+    <p class="state empty-state">No conversations match your filters.</p>
+  } @else {
+    <ul class="conversation-items">
+      @for (conversation of conversations(); track conversation.id) {
+        <li>
+          <button
+            type="button"
+            class="conversation-item"
+            [class.selected]="conversation.id === selectedId()"
+            (click)="selectConversation.emit(conversation.id)"
+          >
+            <span class="item-header">
+              <span class="customer-name">{{ conversation.customerName }}</span>
+              <span class="created-date">{{ conversation.createdAt | date: 'mediumDate' }}</span>
+            </span>
+            <span class="subject">{{ conversation.subject }}</span>
+            <span class="badges">
+              <span class="badge status-{{ conversation.status.toLowerCase() }}">
+                {{ statusLabels[conversation.status] }}
+              </span>
+              <span class="badge priority-{{ conversation.priority.toLowerCase() }}">
+                {{ conversation.priority }}
+              </span>
+            </span>
+          </button>
+        </li>
+      }
+    </ul>
+  }
+</section>
