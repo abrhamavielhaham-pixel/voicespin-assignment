@@ -1,8 +1,5 @@
 import { provideHttpClient } from '@angular/common/http';
-import {
-  HttpTestingController,
-  provideHttpClientTesting,
-} from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { App } from './app';
 import { Conversation } from './core/conversation';
@@ -123,12 +120,8 @@ describe('App', () => {
 
     const detail = root(fixture).querySelector('app-conversation-detail');
     expect(detail?.textContent).toContain('john.carter@example.com');
-    expect(
-      root(fixture).querySelector<HTMLSelectElement>('#detail-status')?.value,
-    ).toBe('OPEN');
-    expect(
-      root(fixture).querySelector<HTMLSelectElement>('#detail-priority')?.value,
-    ).toBe('HIGH');
+    expect(root(fixture).querySelector<HTMLSelectElement>('#detail-status')?.value).toBe('OPEN');
+    expect(root(fixture).querySelector<HTMLSelectElement>('#detail-priority')?.value).toBe('HIGH');
   });
 
   it('saves status and priority changes through the API', async () => {
@@ -140,8 +133,7 @@ describe('App', () => {
     statusSelect.value = 'RESOLVED';
     statusSelect.dispatchEvent(new Event('change'));
 
-    const prioritySelect =
-      root(fixture).querySelector<HTMLSelectElement>('#detail-priority')!;
+    const prioritySelect = root(fixture).querySelector<HTMLSelectElement>('#detail-priority')!;
     prioritySelect.value = 'LOW';
     prioritySelect.dispatchEvent(new Event('change'));
 
@@ -154,11 +146,46 @@ describe('App', () => {
     req.flush({ ...john, status: 'RESOLVED', priority: 'LOW' });
 
     await fixture.whenStable();
+    httpMock
+      .expectOne('/api/conversations')
+      .flush([{ ...john, status: 'RESOLVED', priority: 'LOW' }, maria]);
+    await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(rows(fixture)[0].querySelector('.status-resolved')?.textContent).toContain(
-      'Resolved',
-    );
+    expect(rows(fixture)[0].querySelector('.status-resolved')?.textContent).toContain('Resolved');
     expect(rows(fixture)[0].querySelector('.priority-low')?.textContent).toContain('LOW');
+  });
+
+  it('re-applies the active filter after a save', async () => {
+    const fixture = await render([john, maria]);
+
+    const statusFilter = root(fixture).querySelector<HTMLSelectElement>('.status-filter')!;
+    statusFilter.value = 'OPEN';
+    statusFilter.dispatchEvent(new Event('change'));
+
+    httpMock.expectOne((req) => req.params.get('status') === 'OPEN').flush([john, maria]);
+
+    await fixture.whenStable();
+    fixture.detectChanges();
+    await selectFirst(fixture);
+
+    const statusSelect = root(fixture).querySelector<HTMLSelectElement>('#detail-status')!;
+    statusSelect.value = 'RESOLVED';
+    statusSelect.dispatchEvent(new Event('change'));
+
+    fixture.detectChanges();
+    root(fixture).querySelector<HTMLButtonElement>('.save-button')!.click();
+
+    httpMock.expectOne('/api/conversations/conv-001').flush({ ...john, status: 'RESOLVED' });
+
+    await fixture.whenStable();
+    httpMock.expectOne((req) => req.params.get('status') === 'OPEN').flush([maria]);
+
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(rows(fixture).length).toBe(1);
+    expect(rows(fixture)[0].textContent).toContain('Maria Lopez');
+    expect(root(fixture).querySelector('app-conversation-detail')).toBeNull();
   });
 });

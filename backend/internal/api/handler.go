@@ -12,11 +12,10 @@ import (
 
 type Server struct {
 	store *conversation.Store
-	log   *slog.Logger
 }
 
 func NewServer(store *conversation.Store) *Server {
-	return &Server{store: store, log: slog.Default()}
+	return &Server{store: store}
 }
 
 func (s *Server) Routes() http.Handler {

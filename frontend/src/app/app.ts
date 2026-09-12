@@ -1,15 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  signal,
-} from '@angular/core';
-import {
-  Conversation,
-  ConversationFilters,
-  ConversationUpdate,
-} from './core/conversation';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { Conversation, ConversationFilters, ConversationUpdate } from './core/conversation';
 import { ConversationService } from './core/conversation.service';
 import { ConversationDetail } from './features/conversation-detail/conversation-detail';
 import { ConversationList } from './features/conversation-list/conversation-list';
@@ -63,11 +53,9 @@ export class App {
     this.saving.set(true);
     this.saveError.set(null);
     this.service.update(id, changes).subscribe({
-      next: (updated) => {
-        this.conversations.update((list) =>
-          list.map((c) => (c.id === updated.id ? updated : c)),
-        );
+      next: () => {
         this.saving.set(false);
+        this.load();
       },
       error: () => {
         this.saving.set(false);
@@ -83,10 +71,7 @@ export class App {
       next: (conversations) => {
         this.conversations.set(conversations);
         this.loading.set(false);
-        if (
-          this.selectedId() &&
-          !conversations.some((c) => c.id === this.selectedId())
-        ) {
+        if (this.selectedId() && !conversations.some((c) => c.id === this.selectedId())) {
           this.selectedId.set(null);
         }
       },

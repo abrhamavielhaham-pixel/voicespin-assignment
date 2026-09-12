@@ -1,8 +1,5 @@
 import { provideHttpClient } from '@angular/common/http';
-import {
-  HttpTestingController,
-  provideHttpClientTesting,
-} from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Conversation } from './conversation';
 import { ConversationService } from './conversation.service';
@@ -52,9 +49,7 @@ describe('ConversationService', () => {
       .update('conv-001', { status: 'RESOLVED', priority: 'LOW' })
       .subscribe((conversation) => (result = conversation));
 
-    const req = httpMock.expectOne(
-      (request) => request.url === '/api/conversations/conv-001',
-    );
+    const req = httpMock.expectOne((request) => request.url === '/api/conversations/conv-001');
     expect(req.request.method).toBe('PATCH');
     expect(req.request.body).toEqual({ status: 'RESOLVED', priority: 'LOW' });
 

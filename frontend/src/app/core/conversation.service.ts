@@ -1,11 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import {
-  Conversation,
-  ConversationFilters,
-  ConversationUpdate,
-} from './conversation';
+import { Conversation, ConversationFilters, ConversationUpdate } from './conversation';
 
 @Injectable({ providedIn: 'root' })
 export class ConversationService {
@@ -25,10 +21,6 @@ export class ConversationService {
       params = params.set('search', search);
     }
     return this.http.get<Conversation[]>(this.baseUrl, { params });
-  }
-
-  get(id: string): Observable<Conversation> {
-    return this.http.get<Conversation>(`${this.baseUrl}/${id}`);
   }
 
   update(id: string, changes: ConversationUpdate): Observable<Conversation> {

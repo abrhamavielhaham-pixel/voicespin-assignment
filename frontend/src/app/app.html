@@ -1,5 +1,11 @@
 <header class="app-header">
-  <h1>Conversation Dashboard</h1>
+  <div class="header-titles">
+    <h1>Conversation Dashboard</h1>
+    <p>Customer support queue</p>
+  </div>
+  @if (!loading() && !loadError()) {
+    <span class="queue-count">{{ conversations().length }} in queue</span>
+  }
 </header>
 
 <main class="layout">
@@ -21,7 +27,22 @@
     />
   } @else {
     <section class="panel detail-panel placeholder">
-      <p>Select a conversation to see its details.</p>
+      <svg
+        class="placeholder-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      </svg>
+      <h3>No conversation selected</h3>
+      <p>
+        Choose a conversation from the list to view its details and update its status or priority.
+      </p>
     </section>
   }
 </main>

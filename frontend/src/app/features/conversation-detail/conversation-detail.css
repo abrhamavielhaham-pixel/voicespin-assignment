@@ -1,58 +1,79 @@
 .detail-panel {
   width: 360px;
   flex-shrink: 0;
+  min-height: 0;
   padding: 1.25rem;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.9rem;
 }
 
 .detail-subject {
   margin: 0;
-  font-size: 1.15rem;
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
 }
 
 .customer {
   margin: 0;
-  font-weight: 600;
+  font-size: 13px;
+  color: var(--ink-soft);
 }
 
 .created {
   margin: 0;
-  color: var(--muted);
-  font-size: 0.85rem;
+  color: var(--faint);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.divider {
+  width: 100%;
+  margin: 0.25rem 0;
+  border: 0;
+  border-top: 1px solid var(--border);
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.35rem;
 }
 
 .field label {
-  font-size: 0.85rem;
+  font-size: 12px;
   font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
   color: var(--muted);
 }
 
+.field select {
+  width: 100%;
+}
+
 .save-button {
-  margin-top: 0.5rem;
-  padding: 0.55rem 1rem;
+  width: 100%;
+  height: 40px;
+  margin-top: 0.35rem;
   border: 0;
-  border-radius: 6px;
-  background: #2563eb;
+  border-radius: 8px;
+  background: var(--accent);
   color: #fff;
   font: inherit;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+.save-button:hover:not(:disabled) {
+  background: var(--accent-strong);
 }
 
 .save-button:disabled {
-  background: #c7d2fe;
+  background: #e2e8f0;
+  color: var(--faint);
   cursor: not-allowed;
-}
-
-.placeholder p {
-  color: var(--muted);
 }

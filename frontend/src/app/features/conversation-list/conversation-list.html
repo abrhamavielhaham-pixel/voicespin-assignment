@@ -3,7 +3,7 @@
     <input
       type="search"
       class="search-input"
-      placeholder="Search name, email or subject"
+      placeholder="Search conversations"
       aria-label="Search conversations"
       [value]="search()"
       (input)="onSearchInput($any($event.target).value)"
@@ -31,7 +31,9 @@
   </div>
 
   @if (loading()) {
-    <p class="state loading-state">Loading conversations…</p>
+    <p class="state loading-state">
+      <span class="spinner" aria-hidden="true"></span>Loading conversations…
+    </p>
   } @else if (error()) {
     <p class="state error-state">{{ error() }}</p>
   } @else if (conversations().length === 0) {
@@ -43,6 +45,9 @@
           <button
             type="button"
             class="conversation-item"
+            [class.edge-high]="conversation.priority === 'HIGH'"
+            [class.edge-medium]="conversation.priority === 'MEDIUM'"
+            [class.edge-low]="conversation.priority === 'LOW'"
             [class.selected]="conversation.id === selectedId()"
             (click)="selectConversation.emit(conversation.id)"
           >

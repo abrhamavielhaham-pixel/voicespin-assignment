@@ -1,9 +1,9 @@
 <section class="panel detail-panel">
   <h2 class="detail-subject">{{ conversation().subject }}</h2>
-  <p class="customer">
-    {{ conversation().customerName }} · {{ conversation().customerEmail }}
-  </p>
+  <p class="customer">{{ conversation().customerName }} · {{ conversation().customerEmail }}</p>
   <p class="created">Created {{ conversation().createdAt | date: 'medium' }}</p>
+
+  <hr class="divider" />
 
   <div class="field">
     <label for="detail-status">Status</label>
